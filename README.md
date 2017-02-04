@@ -1,2 +1,2 @@
-#os-sprin-ucf
+#os-spring-ucf
 operating system asignments spring 2017 
