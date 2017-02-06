@@ -1,21 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
 
 
 typedef struct {
 
-	const char* name;
-	int arivalTime;
-	int burstTime;
+	char* name;  			//name of a process
+	int arivalTime; 		//time of arival
+	int burstTime;			//burst time
 
 } Processes;
 
 typedef struct {
 
-	int processCount;
-	int runFor;
-	char* algorithmType;
-	int quantum;
+	int processCount;		//number of processes
+	int runFor;				//time units to run
+	char* algorithmType;	//type of algorith: rr | fsfc | sjf
+	int quantum;			//time quantum 
 
 } Execution;
 
@@ -25,21 +27,27 @@ void readData(Execution * exicutionData, Processes *processArray);
 int main(void) {
 
 	Processes processArray[128] = { {0} };
-	Execution exicutionData = { 0 };
+	Execution executionData = { 0 };
 
-	readData(&exicutionData, processArray);
+	readData(&executionData, processArray);
 	
-	if ( strcmp(exicutionData.algorithmType, "rr") == 0) {
-		
-	}
-	else if (strcmp(exicutionData.algorithmType, "fsfc") == 0) {
+	if ( strcmp(executionData.algorithmType, "rr") == 0) {
+
+		//roundRobin( executionData, processArray ); replace with your function call
 
 	}
-	else if (strcmp(exicutionData.algorithmType, "sjf") == 0) {
+	else if (strcmp(executionData.algorithmType, "fsfc") == 0) {
+
+		//fsfc( executionData, processArray ); replace with your function call
+
+	}
+	else if (strcmp(executionData.algorithmType, "sjf") == 0) {
+
+		//shortestJobFirst( executionData, processArray ); replace with your function call
 
 	}
 	else {
-		printf("Invalid algorithm %s", exicutionData.algorithmType);
+		printf("Invalid algorithm %s\n", executionData.algorithmType);
 	}
 
 
