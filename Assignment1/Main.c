@@ -50,6 +50,12 @@ int main(void) {
 		printf("Invalid algorithm %s\n", executionData.algorithmType);
 	}
 
+	int i;
+	for( i = 0; i < executionData.processCount; i++ ){
+
+		printf("%s, %i, %i\n", processArray[i].name, processArray[i].arivalTime, processArray[i].burstTime);
+
+	}
 
 	return 0;
 }
@@ -96,12 +102,36 @@ void readData(Execution * exicutionData, Processes *processArray) {
 	int i = 0;
 	char name[8];
 	while (feof(fp) == 0) {
-	
+		
+
+		fgets(temp, 128, fp);
+		
+		if(strcmp(strtok(temp, " "), "end") == 0){
+			break;
+		}
+
+
+		strtok(NULL, " ");
+		token = strtok(NULL, " ");
+		processArray[i].name = malloc(sizeof(char) * strlen(token));
+		strcpy(processArray[i].name, token);
+		strtok(NULL, " ");
+		processArray[i].arivalTime = atoi(strtok(NULL, " "));
+		strtok(NULL, " ");		
+		processArray[i].burstTime = atoi(strtok(NULL, " "));
+
+
+		i++;
+
+
+
+	/*
 		fscanf(fp, "%s %s %s %s %i %s %i", &temp, &temp, &name, &temp, &processArray[i].arivalTime, &temp, &processArray[i].burstTime);
 		processArray[i].name = malloc(sizeof(char) * strlen(name));
 		strcpy(processArray[i].name, name);
 
 		i++;
+	*/
 	}
 
 	fclose(fp);
