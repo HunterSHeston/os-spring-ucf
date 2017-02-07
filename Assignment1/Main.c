@@ -50,12 +50,12 @@ int main(void) {
 		printf("Invalid algorithm %s\n", executionData.algorithmType);
 	}
 
-	int i;
-	for( i = 0; i < executionData.processCount; i++ ){
+	//int i;
+	// for( i = 0; i < executionData.processCount; i++ ){
 
-		printf("%s, %i, %i\n", processArray[i].name, processArray[i].arivalTime, processArray[i].burstTime);
+	// 	printf("%s, %i, %i\n", processArray[i].name, processArray[i].arivalTime, processArray[i].burstTime);
 
-	}
+	// }
 
 	return 0;
 }
@@ -69,7 +69,7 @@ void readData(Execution * exicutionData, Processes *processArray) {
 
 	if (fp == NULL) {  
 		printf("%s", "File Not Found exiting....\n");
-		system("exit");
+		exit(0);
 	}
 
 	char temp[128];
@@ -101,18 +101,23 @@ void readData(Execution * exicutionData, Processes *processArray) {
 
 	int i = 0;
 	char name[8];
+
 	while (feof(fp) == 0) {
 		
 
 		fgets(temp, 128, fp);
 		
-		if(strcmp(strtok(temp, " "), "end") == 0){
-			break;
-		}
+		printf("%i, %i\n", sizeof(strtok(temp, " ")), sizeof("end"));
+		
+		// if(strcmp(strtok(temp, " "), "end") == 0){
+		// 	break;
+		// }
 
+		printf("%s\n", strtok(temp, " "));
 
 		strtok(NULL, " ");
 		token = strtok(NULL, " ");
+		printf("|%s|\n", token);
 		processArray[i].name = malloc(sizeof(char) * strlen(token));
 		strcpy(processArray[i].name, token);
 		strtok(NULL, " ");
