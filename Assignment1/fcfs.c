@@ -1,25 +1,24 @@
-void fcfs()
-{
-    int i,j,temp, temp1;
-    Twt=0;
-    Ttt=0;
-    Printf("\n\n FIRST COME FIRST SERVED ALGORITHM\n\n");
-    for(i=1;i<=n;i++)
-    {
-        for(j=i+1;j<=n;j++)
-        {
-            if(A[i]>A[j])
-            {
-                temp=Bu[i];
-                temp1=A[i];
-                Bu[i]=Bu[j];
-                A[i]=A[j];
-                Bu[j]=temp;
-                A[j]=temp1;
-                strcpy(c[i],pname[i]);
-                strcpy(pname[i],pname[j]);
-                strcpy(pname[j],c[i]);
-            }
-        }
-    }
-    
+#include "Main.h"
+#include "fcfs.h"
+
+
+void fcfs( Execution executionData, Processes processArray[] ){
+
+
+
+
+
+
+
+
+
+
+	// //simple loop that will print all the processes recieved from Main.c
+	// printf("%s\n", "from rr.c");
+	//  int i;
+	//  for( i = 0; i < executionData.processCount; i++ ){
+	 
+	//  	printf("%s, %i, %i\n", processArray[i].name, processArray[i].arivalTime, processArray[i].burstTime);
+	 
+	//  }
+}
