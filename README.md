@@ -8,7 +8,7 @@ to attempt to compile the program path to
 type 
 	"make"
 in the console
-------------------------------------------------------------------------
+
 
 run
 ------------------------------------------------------------------------
@@ -16,5 +16,5 @@ the make make file will generate "runAssignmentOne" as an exicutable
 and type 
 	./runAssignmentOne
 in the console
-------------------------------------------------------------------------
+
 
