@@ -6,7 +6,7 @@ compilation
 to attempt to compile the program path to 
 	"../os-spring-ucf"
 type 
-	"make" 
+	"make"
 in the console
 ------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ run
 ------------------------------------------------------------------------
 the make make file will generate "runAssignmentOne" as an exicutable 
 and type 
-	./runAssignmentOne 
+	./runAssignmentOne
 in the console
 ------------------------------------------------------------------------
 
