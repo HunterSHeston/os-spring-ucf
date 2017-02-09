@@ -1,25 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "Main.h"
+#include "fcfs.h"
+#include "rr.h"
+#include "sjf.h"
 
-
-
-typedef struct {
-
-	char* name;  			//name of a process
-	int arivalTime; 		//time of arival
-	int burstTime;			//burst time
-
-} Processes;
-
-typedef struct {
-
-	int processCount;		//number of processes
-	int runFor;				//time units to run
-	char* algorithmType;	//type of algorith: rr | fsfc | sjf
-	int quantum;			//time quantum 
-
-} Execution;
 
 
 void readData(Execution * exicutionData, Processes *processArray);
@@ -31,19 +14,25 @@ int main(void) {
 
 	readData(&executionData, processArray);
 	
+	fcfs( executionData, processArray);
+	rr( executionData, processArray);
+	sjf( executionData, processArray);
+
 	if ( strcmp(executionData.algorithmType, "rr") == 0) {
 
-		//roundRobin( executionData, processArray ); replace with your function call
+		//call to start rr
+		//rr( executionData, processArray ); 
 
 	}
 	else if (strcmp(executionData.algorithmType, "fsfc") == 0) {
 
-		//fsfc( executionData, processArray ); replace with your function call
+		fcfs( executionData, processArray ); //call to fsfc
+	
 
 	}
 	else if (strcmp(executionData.algorithmType, "sjf") == 0) {
 
-		//shortestJobFirst( executionData, processArray ); replace with your function call
+		//( executionData, processArray ); replace with your function call
 
 	}
 	else {
