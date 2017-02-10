@@ -10,8 +10,8 @@ typedef struct PStruct{
 	char* name;  			//name of a process
 	int arivalTime; 		//time of arival
 	int burstTime;			//burst time
-	int wait;
-	int turnaround;
+	int wait;				//time before a process ran
+	int turnaround;			//time a process took to finish after arriving 
 
 } Processes;
 

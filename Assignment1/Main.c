@@ -61,7 +61,7 @@ void readData(Execution * exicutionData, Processes *processArray) {
 
 	FILE *fp;
 
-	fp = fopen("set1_process.in", "r");
+	fp = fopen("set3_process.in", "r");
 
 	if (fp == NULL) {  
 		printf("%s", "File Not Found exiting....\n");
