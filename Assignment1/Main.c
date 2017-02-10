@@ -24,7 +24,7 @@ int main(void) {
 	// sjf( executionData, processArray);
 
 
-	printf("%s\n",executionData.algorithmType );
+	//printf("%s\n",executionData.algorithmType );
 	if ( strcmp(executionData.algorithmType, "rr") == 0) {
 
 		//call to start rr
