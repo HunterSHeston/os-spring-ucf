@@ -5,8 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-
 typedef struct PStruct{
 
 	char* name;  			//name of a process
@@ -23,5 +21,8 @@ typedef struct EStruct{
 	int quantum;			//time quantum 
 
 } Execution;
+
+
+void trimProcesses(int processCount, Processes processArray[], Processes trimedProcesses[]);
 
 #endif /*  Main.h */

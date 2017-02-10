@@ -14,25 +14,32 @@ int main(void) {
 
 	readData(&executionData, processArray);
 	
-	fcfs( executionData, processArray);
-	rr( executionData, processArray);
-	sjf( executionData, processArray);
 
+	Processes trimedProcesses[executionData.processCount];
+
+	trimProcesses( executionData.processCount, processArray, trimedProcesses);
+
+//	 fcfs( executionData, trimedProcesses);
+	// rr( executionData, processArray);
+	// sjf( executionData, processArray);
+
+
+	printf("%s\n",executionData.algorithmType );
 	if ( strcmp(executionData.algorithmType, "rr") == 0) {
 
 		//call to start rr
-		//rr( executionData, processArray ); 
+		rr( executionData, trimedProcesses ); 
 
 	}
-	else if (strcmp(executionData.algorithmType, "fsfc") == 0) {
+	else if (strcmp(executionData.algorithmType, "fcfs") == 0) {
 
-		fcfs( executionData, processArray ); //call to fsfc
+		fcfs( executionData, trimedProcesses ); //call to fsfc
 	
 
 	}
 	else if (strcmp(executionData.algorithmType, "sjf") == 0) {
 
-		//( executionData, processArray ); replace with your function call
+		sjf( executionData, trimedProcesses ); //replace with your function call
 
 	}
 	else {
@@ -54,7 +61,7 @@ void readData(Execution * exicutionData, Processes *processArray) {
 
 	FILE *fp;
 
-	fp = fopen("set2_process.in", "r");
+	fp = fopen("set1_process.in", "r");
 
 	if (fp == NULL) {  
 		printf("%s", "File Not Found exiting....\n");
@@ -78,15 +85,17 @@ void readData(Execution * exicutionData, Processes *processArray) {
 	exicutionData->algorithmType = malloc(sizeof(char) * strlen(token));
 	strcpy(exicutionData->algorithmType, token);
 
-
+	fgets(temp, 128, fp);
 	if (strcmp(exicutionData->algorithmType, "rr") == 0) {
-		fgets(temp, 128, fp);
+		
 		token = strtok(temp, " ");
 		exicutionData->quantum = atoi(strtok(NULL, " "));
 	}
 	else {
 		exicutionData->quantum = 0;
 	}
+
+
 
 	int i = 0;
 	while (feof(fp) == 0) {
@@ -111,5 +120,15 @@ void readData(Execution * exicutionData, Processes *processArray) {
 	}
 
 	fclose(fp);
+
+}
+
+void trimProcesses(int processCount, Processes processArray[], Processes trimedProcesses[]){
+
+
+	int i = 0;
+	for(i = 0; i < processCount; i++){
+		trimedProcesses[i] = processArray[i];
+	}
 
 }
