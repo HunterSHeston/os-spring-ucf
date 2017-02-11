@@ -4,23 +4,17 @@
 
 void fcfs( Execution executionData, Processes processArray[] ){
 
+	FILE *fp;
+	fp = fopen("processes.out", "w");
+	if(fp == NULL){
+		printf("File not opened1\n");
+		exit(0);
+	}
 
+	fprintf(fp, "%i process\n", executionData.processCount);
+	
 
-
-
-
-
-
-
-
-	//simple loop that will print all the processes recieved from Main.c
-	printf("%s\n", "from fcfs.c");
-	 int i;
-	 for( i = 0; i < executionData.processCount; i++ ){
-	 
-	 	printf("%s, %i, %i\n", processArray[i].name, processArray[i].arivalTime, processArray[i].burstTime);
-	 
-	 }
+	//printf("%i process\n", executionData.processCount);
 
 	 //sort by arrival time
 	 sortByArival(executionData, processArray);
@@ -29,26 +23,28 @@ void fcfs( Execution executionData, Processes processArray[] ){
 	 int selectedProcess = -1;
 	 while(time <= executionData.runFor){
 
-	 	selectedProcess = passTimeUnit( time, executionData, processArray, selectedProcess);
+	 	selectedProcess = passTimeUnit( time, executionData, processArray, selectedProcess, fp);
 
-	 	printf("%i\n", time);
 	 	time++;
 	 }	 
-
+	 int i;
 	 for(i = 0; i < executionData.processCount; i++){
-
-	 	printf("%s wait %i turnaround %i\n", processArray[i].name, processArray[i].wait, processArray[i].turnaround);
+	 	fprintf(fp, "%s wait %i turnaround %i\n", processArray[i].name, processArray[i].wait, processArray[i].turnaround);
+	 	//printf("%s wait %i turnaround %i\n", processArray[i].name, processArray[i].wait, processArray[i].turnaround);
 	 }
+
+	 fclose(fp);
 
 }
 
-int passTimeUnit(int time, Execution executionData, Processes processArray[], int selectedProcess){
+int passTimeUnit(int time, Execution executionData, Processes processArray[], int selectedProcess, FILE *fp){
 
 	//check to see if a process has arrived
 	int i = 0;
 	for( i = 0; i < executionData.processCount; i++){
 		if(time == processArray[i].arivalTime){
-			printf("Time %i: %s arrived\n", time, processArray[i].name);
+			fprintf(fp, "Time %i: %s arrived\n", time, processArray[i].name);
+			//printf("Time %i: %s arrived\n", time, processArray[i].name);
 		}
 	}
 
@@ -59,11 +55,12 @@ int passTimeUnit(int time, Execution executionData, Processes processArray[], in
 			if(processArray[i].burstTime > 0){
 			
 				if(selectedProcess != -1){
-					printf("Time %i: %s finished\n", time, processArray[selectedProcess].name);
+					fprintf(fp, "Time %i: %s finished\n", time, processArray[selectedProcess].name);
+					//printf("Time %i: %s finished\n", time, processArray[selectedProcess].name);
 					processArray[selectedProcess].turnaround = time - processArray[selectedProcess].arivalTime;
 				}
-
-				printf("Time %i: %s selected (burst %i)\n", time, processArray[i].name, processArray[i].burstTime);
+				fprintf(fp, "Time %i: %s selected (burst %i)\n", time, processArray[i].name, processArray[i].burstTime);
+				//printf("Time %i: %s selected (burst %i)\n", time, processArray[i].name, processArray[i].burstTime);
 				processArray[i].wait = time - processArray[i].arivalTime;
 				processArray[i].burstTime--;
 				return i;
@@ -106,32 +103,3 @@ void sortByArival(Execution executionData, Processes processArray[]){
 
 
 
-// void runfcfs( Execution executionData, processes processArray[]){
-
-
-// 	int time = 0;
-// 	processes arived = NULL;
-
-// 	while(time < executionData.runFor){
-
-// 		arived = hasArived( time, executionData.processCount, processArray );
-		
-// 		if(arived != NULL){
-// 			printf("Time %i: %s arived\n", time, arived.name);
-// 		}
-
-
-
-// 	}
-
-
-// }
-
-// processes hasArived( int time, int processCount, processes processArray[] ){
-
-// 	int i;
-// 	for(i = 0; i < processCount; i++){
-
-// 	}
-
-// }

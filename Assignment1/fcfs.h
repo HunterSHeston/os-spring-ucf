@@ -5,6 +5,6 @@
 
 void fcfs( Execution executionData, Processes processArray[] );
 void sortByArival(Execution executionData, Processes processArray[]);
-int passTimeUnit(int time, Execution executionData, Processes processArray[], int selectedProcess);
+int passTimeUnit(int time, Execution executionData, Processes processArray[], int selectedProcess, FILE *fp);
 
 #endif
