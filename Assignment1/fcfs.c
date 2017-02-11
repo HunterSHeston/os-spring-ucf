@@ -12,7 +12,7 @@ void fcfs( Execution executionData, Processes processArray[] ){
 	}
 
 	fprintf(fp, "%i process\n", executionData.processCount);
-	
+	fprintf(fp, "Using fcfs\n\n" );
 
 	//printf("%i process\n", executionData.processCount);
 
@@ -26,7 +26,8 @@ void fcfs( Execution executionData, Processes processArray[] ){
 	 	selectedProcess = passTimeUnit( time, executionData, processArray, selectedProcess, fp);
 
 	 	time++;
-	 }	 
+	 }
+	 fprintf(fp, "\n");	 
 	 int i;
 	 for(i = 0; i < executionData.processCount; i++){
 	 	fprintf(fp, "%s wait %i turnaround %i\n", processArray[i].name, processArray[i].wait, processArray[i].turnaround);

@@ -19,15 +19,9 @@ int main(void) {
 
 	trimProcesses( executionData.processCount, processArray, trimedProcesses);
 
-//	 fcfs( executionData, trimedProcesses);
-	// rr( executionData, processArray);
-	// sjf( executionData, processArray);
 
-
-	//printf("%s\n",executionData.algorithmType );
 	if ( strcmp(executionData.algorithmType, "rr") == 0) {
 
-		//call to start rr
 		rr( executionData, trimedProcesses ); 
 
 	}
@@ -46,13 +40,6 @@ int main(void) {
 		printf("Invalid algorithm %s\n", executionData.algorithmType);
 	}
 
-	 //int i;
-	 //for( i = 0; i < executionData.processCount; i++ ){
-	 //
-	 //	printf("%s, %i, %i\n", processArray[i].name, processArray[i].arivalTime, processArray[i].burstTime);
-	 //
-	 //}
-
 	return 0;
 }
 
@@ -61,7 +48,7 @@ void readData(Execution * exicutionData, Processes *processArray) {
 
 	FILE *fp;
 
-	fp = fopen("set1_process.in", "r");
+	fp = fopen("set3_process.in", "r");
 
 	if (fp == NULL) {  
 		printf("%s", "File Not Found exiting....\n");
