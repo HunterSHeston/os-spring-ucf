@@ -12,6 +12,7 @@ typedef struct PStruct{
 	int burstTime;			//burst time
 	int wait;				//time before a process ran
 	int turnaround;			//time a process took to finish after arriving 
+	int isDone;
 
 } Processes;
 

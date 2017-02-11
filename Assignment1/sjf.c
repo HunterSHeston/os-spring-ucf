@@ -31,7 +31,7 @@ void sjf(Execution executionData, Processes processArray[]){
 		
 	 	
 		 for(i = 0; i < haveArrived; i++){
-		 	fprintf(fp, "%s wait %i turnaround %i\n", arrivedProcesses[i].name, arrivedProcesses[i].wait, arrivedProcesses[i].turnaround);
+		 	fprintf(fp, "%s wait %i turnaround %i\n", arrivedProcesses[i].name, arrivedProcesses[i].wait, arrivedProcesses[i].turnaround+arrivedProcesses[i].wait-1);
 
 		 }
 
@@ -44,11 +44,14 @@ void passTimeUnitSJF( int time, Execution executionData, Processes arrivedProces
 
 		int i = 0;
 		int j;
+		int allFin = 0;
+
 		while( arrivedProcesses[i].burstTime <= 0 && i < haveArrived ){
 			i++;
 		}
 		
 		if(i == haveArrived){
+			allFin = 1;
 			i--;
 		}
 		
@@ -58,23 +61,34 @@ void passTimeUnitSJF( int time, Execution executionData, Processes arrivedProces
 			return;
 		}
 		
-		if( strcmp(currentProcess, arrivedProcesses[i].name) != 0){
+		if( ( strcmp( currentProcess, arrivedProcesses[i].name) != 0) && (arrivedProcesses[i].isDone != 1) ){
 			fprintf(fp, "Time %i: %s selected (burst %i)\n", time, arrivedProcesses[i].name, arrivedProcesses[i].burstTime);
 			strcpy(currentProcess, arrivedProcesses[i].name);
 
 		}
 
-		for(j = 0; j < haveArrived-1; j++){
-			if(strcmp(currentProcess, arrivedProcesses[j].name) != 0){
+		for(j = 0; j < haveArrived; j++){
+			
+			if(strcmp(currentProcess, arrivedProcesses[j].name) != 0 && (arrivedProcesses[j].isDone != 1) ){
 				arrivedProcesses[j].wait++;
 			}
+		
 		}
 
 		arrivedProcesses[i].turnaround++;
 		arrivedProcesses[i].burstTime--;
-		if(arrivedProcesses[i].burstTime <= 0){
-			fprintf(fp, "Time %i: %s finished\n", time+1, arrivedProcesses[i].name);
+
+		if(allFin == 1){
+
+			fprintf(fp, "Time %i: %s\n", time, "IDLE");
+
+		}else{
+				if( (arrivedProcesses[i].burstTime <= 0) && (arrivedProcesses[i].isDone != 1) ){
+					fprintf(fp, "Time %i: %s finished\n", time+1, arrivedProcesses[i].name);
+					arrivedProcesses[i].isDone = 1;
+				}
 		}
+
 }
 
 

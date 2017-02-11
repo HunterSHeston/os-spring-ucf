@@ -90,7 +90,7 @@ void readData(Execution * exicutionData, Processes *processArray) {
 
 		fgets(temp, 128, fp);
 		token = strtok(temp, " ");
-		 if(strcmp(token, "end\n") == 0){
+		 if(strcmp(token, "end\n") == 0 || strcmp(token, "end") == 0){
 		 	break;
 		 }
 
