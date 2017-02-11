@@ -21,7 +21,6 @@ void sjf(Execution executionData, Processes processArray[]){
 	 Processes arrivedProcesses[executionData.processCount];
 	 
 	 while(time < executionData.runFor){
-	 	//printf("%i\n", time);
 	 	checkArrival(time, executionData, arrivedProcesses, processArray, haveArrivedPtr, fp);
 	 	sortByBurst(executionData, arrivedProcesses, haveArrived);
 		passTimeUnitSJF(time, executionData, arrivedProcesses, haveArrived, currentProcess, fp);
@@ -59,7 +58,7 @@ void passTimeUnitSJF( int time, Execution executionData, Processes arrivedProces
 			return;
 		}
 		
-		if( strcmp(currentProcess, arrivedProcesses[i].name) == 0){
+		if( strcmp(currentProcess, arrivedProcesses[i].name) != 0){
 			fprintf(fp, "Time %i: %s selected (burst %i)\n", time, arrivedProcesses[i].name, arrivedProcesses[i].burstTime);
 			strcpy(currentProcess, arrivedProcesses[i].name);
 
