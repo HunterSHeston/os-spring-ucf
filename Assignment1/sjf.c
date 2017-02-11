@@ -28,12 +28,11 @@ void sjf(Execution executionData, Processes processArray[]){
 		time++;
 	 }
 
-	 fprintf( fp,"Finished at time %i\n", time);
+	 fprintf( fp,"Finished at time %i\n\n", time);
 		
 	 	
-		 fprintf(fp, "has arrived : %i\n",  haveArrived);
 		 for(i = 0; i < haveArrived; i++){
-		 	fprintf(fp, "turnaround: %i, wait: %i, Name: %s\n", arrivedProcesses[i].turnaround, arrivedProcesses[i].wait, arrivedProcesses[i].name);
+		 	fprintf(fp, "%s wait %i turnaround %i\n", arrivedProcesses[i].name, arrivedProcesses[i].wait, arrivedProcesses[i].turnaround);
 
 		 }
 
@@ -67,7 +66,6 @@ void passTimeUnitSJF( int time, Execution executionData, Processes arrivedProces
 		}
 
 		for(j = 0; j < haveArrived-1; j++){
-			//fprintf(fp, "j:  %i haveArrived: %i\n", j, haveArrived);
 			if(strcmp(currentProcess, arrivedProcesses[j].name) != 0){
 				arrivedProcesses[j].wait++;
 			}
