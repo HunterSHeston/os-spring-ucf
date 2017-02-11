@@ -27,13 +27,14 @@ void fcfs( Execution executionData, Processes processArray[] ){
 
 	 	time++;
 	 }
+	 if(processArray[selectedProcess].burstTime <= 0){
+	 	fprintf(fp, "Time %d: %s finished\n",time-1,processArray[selectedProcess].name);
+		processArray[selectedProcess].turnaround = time - 1 - processArray[selectedProcess].arivalTime;
+	 }
 	 fprintf(fp, "Finished at time %d\n",time-1);
 	 fprintf(fp, "\n");	 
 	 int i;
 	 for(i = 0; i < executionData.processCount; i++){
-		if(processArray[i].turnaround == 0){
-			processArray[i].turnaround = time - 1 - processArray[selectedProcess].arivalTime;		
-		}
 	 	fprintf(fp, "%s wait %i turnaround %i\n", processArray[i].name, processArray[i].wait, processArray[i].turnaround);
 	 	//printf("%s wait %i turnaround %i\n", processArray[i].name, processArray[i].wait, processArray[i].turnaround);
 	 }
