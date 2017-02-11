@@ -21,7 +21,7 @@ void sjf(Execution executionData, Processes processArray[]){
 	 Processes arrivedProcesses[executionData.processCount];
 	 
 	 while(time < executionData.runFor){
-	 	printf("%i\n", time);
+	 	//printf("%i\n", time);
 	 	checkArrival(time, executionData, arrivedProcesses, processArray, haveArrivedPtr, fp);
 	 	sortByBurst(executionData, arrivedProcesses, haveArrived);
 		passTimeUnitSJF(time, executionData, arrivedProcesses, haveArrived, currentProcess, fp);
@@ -46,16 +46,20 @@ void passTimeUnitSJF( int time, Execution executionData, Processes arrivedProces
 
 		int i = 0;
 		int j;
-		while( arrivedProcesses[i].burstTime <= 0 && i < haveArrived){
+		while( arrivedProcesses[i].burstTime <= 0 && i < haveArrived ){
 			i++;
 		}
 		
-		printf("%s\n", "here1");
-		//if(strcmp(arrivedProcesses[i].name, "end\n") == 0){
-			//fprintf(fp, "Time: %s\n", "IDLE");
-			//return;
-		//}
-		printf("%s\n", "here2");
+		if(i == haveArrived){
+			i--;
+		}
+		
+		
+		if(strcmp(arrivedProcesses[i].name, "end\n") == 0){
+			fprintf(fp, "Time: %s\n", "IDLE");
+			return;
+		}
+		
 		if( strcmp(currentProcess, arrivedProcesses[i].name) == 0){
 			fprintf(fp, "Time %i: %s selected (burst %i)\n", time, arrivedProcesses[i].name, arrivedProcesses[i].burstTime);
 			strcpy(currentProcess, arrivedProcesses[i].name);
@@ -63,7 +67,7 @@ void passTimeUnitSJF( int time, Execution executionData, Processes arrivedProces
 		}
 
 		for(j = 0; j < haveArrived-1; j++){
-			fprintf(fp, "j:  %i haveArrived: %i\n", j, haveArrived);
+			//fprintf(fp, "j:  %i haveArrived: %i\n", j, haveArrived);
 			if(strcmp(currentProcess, arrivedProcesses[j].name) != 0){
 				arrivedProcesses[j].wait++;
 			}
