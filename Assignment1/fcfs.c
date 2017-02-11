@@ -11,8 +11,8 @@ void fcfs( Execution executionData, Processes processArray[] ){
 		exit(0);
 	}
 
-	fprintf(fp, "%i process\n", executionData.processCount);
-	fprintf(fp, "Using fcfs\n\n" );
+	fprintf(fp, "%i processes\n", executionData.processCount);
+	fprintf(fp, "Using First Come First Served\n\n" );
 
 	//printf("%i process\n", executionData.processCount);
 
@@ -27,9 +27,13 @@ void fcfs( Execution executionData, Processes processArray[] ){
 
 	 	time++;
 	 }
+	 fprintf(fp, "Finished at time %d\n",time-1);
 	 fprintf(fp, "\n");	 
 	 int i;
 	 for(i = 0; i < executionData.processCount; i++){
+		if(processArray[i].turnaround == 0){
+			processArray[i].turnaround = time - 1 - processArray[selectedProcess].arivalTime;		
+		}
 	 	fprintf(fp, "%s wait %i turnaround %i\n", processArray[i].name, processArray[i].wait, processArray[i].turnaround);
 	 	//printf("%s wait %i turnaround %i\n", processArray[i].name, processArray[i].wait, processArray[i].turnaround);
 	 }

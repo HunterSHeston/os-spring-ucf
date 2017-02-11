@@ -17,7 +17,7 @@ aTime* minArrivalTime( Execution , Processes[]);
 void checkArrive(Processes[], int,int,FILE*);
 
 void rr(Execution executionData, Processes processArray[]){
-    FILE* output = fopen("process.out" ,"w");
+    FILE* output = fopen("processes.out" ,"w");
     int i = 0,j,k,m,w;
     int idle = 1;
     aTime* info;
