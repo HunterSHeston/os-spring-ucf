@@ -1,2 +1,8 @@
 *.o
 runAssignmentOne
+*.ko
+*.order
+*.mod
+*.cmd
+*.symvers
+*.mod.c
