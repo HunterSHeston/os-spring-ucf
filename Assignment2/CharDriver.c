@@ -7,12 +7,12 @@ int init_module(void);
 void clean_modle(void);
 static int device_open(struct inode*, struct file*);
 static int device_release(struct inode *, struct file*);
-static ssize_t device_read(Struct file*, char *, size_t, loff_t*);
+static ssize_t device_read(struct file*, char *, size_t, loff_t*);
 static ssize_t device_write(struct file *, const char *, size_t, loff_t *);
 
 #define SUCCESS 0
-#define DEVICE_NAME "chardev"
-#define BUFF_SIZE 50
+#define DEVICE_NAME "chardriver"
+#define BUFF_SIZE 1024
 
 static int Major;
 static int Device_Open = 0;
