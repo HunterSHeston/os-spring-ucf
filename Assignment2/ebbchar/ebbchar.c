@@ -121,13 +121,21 @@ static int dev_open(struct inode *inodep, struct file *filep){
  */
 static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *offset){
    int error_count = 0;
+   
+
    // copy_to_user has the format ( * to, *from, size) and returns 0 on success
-   printk(KERN_INFO "EBBChar: Message: %s", message);
+   printk(KERN_INFO "EBBChar: Message: %s\n", message);
    error_count = copy_to_user(buffer, message, size_of_message);
+   message[0] = '\0';
+   if(*offset > 0){
+      return 0;
+   }
 
    if (error_count==0){            // if true then have success
       printk(KERN_INFO "EBBChar: Sent %d characters to the user\n", size_of_message);
-      return (size_of_message=0);  // clear the position to the start and return 0
+      *offset = size_of_message;
+      size_of_message = 0;
+      return (*offset);  // clear the position to the start and return 0
    }
    else {
       printk(KERN_INFO "EBBChar: Failed to send %d characters to the user\n", error_count);
@@ -150,14 +158,15 @@ static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, lof
    }else if((size_of_message + (short)len) > BUFFER_LEN){
       int i;
       int j = 0;
-      for( i = (int)size_of_message-1; i < BUFFER_LEN; i++){
+      for( i = (int)size_of_message-1; i < BUFFER_LEN-1; i++){
          message[i] = buffer[j++];
       }
       size_of_message +=(short)j;
       printk(KERN_INFO "EBBChar: Not enough room in buffer %d characters writen Message: %s", j-1, message);
       return len;
    }else{
-      sprintf(message, "%s(%zu letters)", buffer, len);   // appending received string with its length
+      //sprintf(message, "%s(%zu letters)", buffer, len);   // appending received string with its length
+      strcat(message, buffer);
       size_of_message +=(short)len;                 // store the length of the stored message
       printk(KERN_INFO "EBBChar: Received %zu characters from the user message: %s\n", len, message);
       return len;
