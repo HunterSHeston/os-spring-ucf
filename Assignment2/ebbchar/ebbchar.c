@@ -1,14 +1,4 @@
-/**
- * @file   ebbchar.c
- * @author Derek Molloy
- * @date   7 April 2015
- * @version 0.1
- * @brief   An introductory character driver to support the second article of my series on
- * Linux loadable kernel module (LKM) development. This module maps to /dev/ebbchar and
- * comes with a helper C program that can be run in Linux user space to communicate with
- * this the LKM.
- * @see http://www.derekmolloy.ie/ for a full description and follow-up descriptions.
- */
+
 
 #include <linux/init.h>           // Macros used to mark up functions e.g. __init __exit
 #include <linux/module.h>         // Core header for loading LKMs into the kernel
@@ -21,7 +11,6 @@
 #define BUFFER_LEN 1024
 
 MODULE_LICENSE("GPL");            ///< The license type -- this affects available functionality
-MODULE_AUTHOR("Derek Molloy");    ///< The author -- visible when you use modinfo
 MODULE_DESCRIPTION("A simple Linux char driver for the BBB");  ///< The description -- see modinfo
 MODULE_VERSION("0.1");            ///< A version number to inform users
 
