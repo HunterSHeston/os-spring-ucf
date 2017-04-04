@@ -18,7 +18,7 @@
 #include <asm/uaccess.h>          // Required for the copy to user function
 #define  DEVICE_NAME "ebbchar"    ///< The device will appear at /dev/ebbchar using this value
 #define  CLASS_NAME  "ebb"        ///< The device class -- this is a character device driver
-#define BUFFER_LEN 256
+#define BUFFER_LEN 1024
 
 MODULE_LICENSE("GPL");            ///< The license type -- this affects available functionality
 MODULE_AUTHOR("Derek Molloy");    ///< The author -- visible when you use modinfo
@@ -170,6 +170,7 @@ static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, lof
       size_of_message +=(short)len;                 // store the length of the stored message
       printk(KERN_INFO "EBBChar: Received %zu characters from the user message: %s\n", len, message);
       return len;
+
    }
 
 }
