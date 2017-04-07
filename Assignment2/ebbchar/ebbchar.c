@@ -1,4 +1,14 @@
-
+/**
+ * @file   ebbchar.c
+ * @author Derek Molloy
+ * @date   7 April 2015
+ * @version 0.1
+ * @brief   An introductory character driver to support the second article of my series on
+ * Linux loadable kernel module (LKM) development. This module maps to /dev/ebbchar and
+ * comes with a helper C program that can be run in Linux user space to communicate with
+ * this the LKM.
+ * @see http://www.derekmolloy.ie/ for a full description and follow-up descriptions.
+ */
 
 #include <linux/init.h>           // Macros used to mark up functions e.g. __init __exit
 #include <linux/module.h>         // Core header for loading LKMs into the kernel
@@ -113,7 +123,6 @@ static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *of
    
 
    // copy_to_user has the format ( * to, *from, size) and returns 0 on success
-   printk(KERN_INFO "EBBChar: Message: %s\n", message);
    error_count = copy_to_user(buffer, message, size_of_message);
    message[0] = '\0';
    if(*offset > 0){
@@ -142,7 +151,7 @@ static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *of
  */
 static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, loff_t *offset){
    if(size_of_message >= (short)BUFFER_LEN){
-      printk(KERN_INFO "EBBChar: buffer full 0 characters writen message: %s", message);
+      printk(KERN_INFO "EBBChar: buffer full 0 characters writen");
       return len;
    }else if((size_of_message + (short)len) > BUFFER_LEN){
       int i;
@@ -151,13 +160,18 @@ static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, lof
          message[i] = buffer[j++];
       }
       size_of_message +=(short)j;
-      printk(KERN_INFO "EBBChar: Not enough room in buffer %d characters writen Message: %s", j-1, message);
+      printk(KERN_INFO "EBBChar: Not enough room in buffer %d characters writen", j-1);
       return len;
    }else{
       //sprintf(message, "%s(%zu letters)", buffer, len);   // appending received string with its length
-      strcat(message, buffer);
+      //strcat(message, buffer);
+      int i;
+      int j = 0;
+      for(i = (int)size_of_message; i < (int)(size_of_message + (short)len); i++){
+         message[i] = buffer[j++];
+      }
       size_of_message +=(short)len;                 // store the length of the stored message
-      printk(KERN_INFO "EBBChar: Received %zu characters from the user message: %s\n", len, message);
+      printk(KERN_INFO "EBBChar: Received %zu characters from the user\n", len);
       return len;
 
    }
