@@ -47,7 +47,7 @@ static struct file_operations fops =
  *  @return returns 0 if successful
  */
 static int __init ebbchar_init(void){
-   printk(KERN_INFO "WriteEbbChar: Initializing the EBBChar LKM\n");
+   printk(KERN_INFO "WriteEbbChar: Initializing the WriteEbbChar LKM\n");
 
    // Try to dynamically allocate a major number for the device -- more difficult but worth it
    majorNumber = register_chrdev(0, DEVICE_NAME, &fops);
@@ -110,26 +110,8 @@ static int dev_open(struct inode *inodep, struct file *filep){
  *  @param offset The offset if required
  */
 static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *offset){
-   int error_count = 0;
-   
-
-   // copy_to_user has the format ( * to, *from, size) and returns 0 on success
-   error_count = copy_to_user(buffer, message, size_of_message);
-   message[0] = '\0';
-   if(*offset > 0){
-      return 0;
-   }
-
-   if (error_count==0){            // if true then have success
-      printk(KERN_INFO "WriteEbbChar: Sent %d characters to the user\n", size_of_message);
-      *offset = size_of_message;
-      size_of_message = 0;
-      return (*offset);  // clear the position to the start and return 0
-   }
-   else {
-      printk(KERN_INFO "WriteEbbChar: Failed to send %d characters to the user\n", error_count);
-      return -EFAULT;              // Failed -- return a bad address message (i.e. -14)
-   }
+  printk(KERN_ALERT "WriteEbbChar: Not supported! Reading must be from the readEbbchar device\n");
+   return -EINVAL;
 }
 
 /** @brief This function is called whenever the device is being written to from user space i.e.

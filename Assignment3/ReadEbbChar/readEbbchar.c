@@ -46,7 +46,7 @@ static struct file_operations fops =
  *  @return returns 0 if successful
  */
 static int __init ebbchar_init(void){
-   printk(KERN_INFO "ReadEbbChar: Initializing the EBBChar LKM\n");
+   printk(KERN_INFO "ReadEbbChar: Initializing the ReadEbbChar LKM\n");
 
    // Try to dynamically allocate a major number for the device -- more difficult but worth it
    majorNumber = register_chrdev(0, DEVICE_NAME, &fops);
@@ -140,32 +140,9 @@ static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *of
  *  @param offset The offset if required
  */
 static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, loff_t *offset){
-   if(size_of_message >= (short)BUFFER_LEN){
-      printk(KERN_INFO "ReadEbbChar: buffer full 0 characters writen");
-      return len;
-   }else if((size_of_message + (short)len) > BUFFER_LEN){
-      int i;
-      int j = 0;
-      for( i = (int)size_of_message-1; i < BUFFER_LEN-1; i++){
-         message[i] = buffer[j++];
-      }
-      size_of_message +=(short)j;
-      printk(KERN_INFO "ReadEbbChar: Not enough room in buffer %d characters writen", j-1);
-      return len;
-   }else{
-      //sprintf(message, "%s(%zu letters)", buffer, len);   // appending received string with its length
-      //strcat(message, buffer);
-      int i;
-      int j = 0;
-      for(i = (int)size_of_message; i < (int)(size_of_message + (short)len); i++){
-         message[i] = buffer[j++];
-      }
-      size_of_message +=(short)len;                 // store the length of the stored message
-      printk(KERN_INFO "ReadEbbChar: Received %zu characters from the user\n", len);
-      return len;
-
-   }
-
+ 
+   printk(KERN_ALERT "ReadEbbChar: Not supported! Writing must be done to the writeEbbchar device\n");
+   return -EINVAL;
 }
 
 /** @brief The device release function that is called whenever the device is closed/released by
