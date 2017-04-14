@@ -4,6 +4,8 @@
 #include <linux/kernel.h>         // Contains types, macros, functions for the kernel
 #include <linux/fs.h>             // Header for the Linux file system support
 #include <asm/uaccess.h>          // Required for the copy to user function
+#include <linux/mutex.h>          // provides mutex functionality
+
 #define  DEVICE_NAME "readEbbchar"    ///< The device will appear at /dev/ebbchar using this value
 #define  CLASS_NAME  "rEbb"        ///< The device class -- this is a character device driver
 #define BUFFER_LEN 1024
@@ -20,6 +22,8 @@ extern short  size_of_message;              ///< Used to remember the size of th
 static int    numberOpens = 0;              ///< Counts the number of times the device is opened
 static struct class*  ebbcharClass  = NULL; ///< The device-driver class struct pointer
 static struct device* ebbcharDevice = NULL; ///< The device-driver device struct pointer
+
+extern struct mutex readWrite_mutex;
 
 // The prototype functions for the character driver -- must come before the struct definition
 static int     dev_open(struct inode *, struct file *);
@@ -109,13 +113,19 @@ static int dev_open(struct inode *inodep, struct file *filep){
  *  @param offset The offset if required
  */
 static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *offset){
+   
    int error_count = 0;
    
+   if(mutex_trylock(&readWrite_mutex) == 0){
+      printk(KERN_ALERT "ReadEbbChar: buffer in use!!!");
+      return -EBUSY;
+  }
 
    // copy_to_user has the format ( * to, *from, size) and returns 0 on success
    error_count = copy_to_user(buffer, message, size_of_message);
    message[0] = '\0';
    if(*offset > 0){
+      mutex_unlock(&readWrite_mutex);
       return 0;
    }
 
@@ -123,10 +133,12 @@ static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *of
       printk(KERN_INFO "ReadEbbChar: Sent %d characters to the user\n", size_of_message);
       *offset = size_of_message;
       size_of_message = 0;
+      mutex_unlock(&readWrite_mutex);
       return (*offset);  // clear the position to the start and return 0
    }
    else {
       printk(KERN_INFO "ReadEbbChar: Failed to send %d characters to the user\n", error_count);
+      mutex_unlock(&readWrite_mutex);
       return -EFAULT;              // Failed -- return a bad address message (i.e. -14)
    }
 }

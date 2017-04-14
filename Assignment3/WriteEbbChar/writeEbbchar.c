@@ -4,6 +4,8 @@
 #include <linux/kernel.h>         // Contains types, macros, functions for the kernel
 #include <linux/fs.h>             // Header for the Linux file system support
 #include <asm/uaccess.h>          // Required for the copy to user function
+#include <linux/mutex.h>          // provides mutex functionality
+
 #define  DEVICE_NAME "writeEbbchar"    ///< The device will appear at /dev/ebbchar using this value
 #define  CLASS_NAME  "wEbb"        ///< The device class -- this is a character device driver
 #define BUFFER_LEN 1024
@@ -19,6 +21,9 @@ static int    numberOpens = 0;              ///< Counts the number of times the 
 static struct class*  ebbcharClass  = NULL; ///< The device-driver class struct pointer
 static struct device* ebbcharDevice = NULL; ///< The device-driver device struct pointer
 
+DEFINE_MUTEX(readWrite_mutex);
+
+EXPORT_SYMBOL(readWrite_mutex);
 EXPORT_SYMBOL(message);
 EXPORT_SYMBOL(size_of_message);
 
@@ -74,6 +79,9 @@ static int __init ebbchar_init(void){
       printk(KERN_ALERT "Failed to create the device\n");
       return PTR_ERR(ebbcharDevice);
    }
+
+   mutex_init(&readWrite_mutex);
+
    printk(KERN_INFO "WriteEbbChar: device class created correctly\n"); // Made it! device was initialized
    return 0;
 }
@@ -110,7 +118,7 @@ static int dev_open(struct inode *inodep, struct file *filep){
  *  @param offset The offset if required
  */
 static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *offset){
-  printk(KERN_ALERT "WriteEbbChar: Not supported! Reading must be from the readEbbchar device\n");
+  printk(KERN_ALERT "WriteEbbChar: Not supported! Reading must be done from the readEbbchar device\n");
    return -EINVAL;
 }
 
@@ -123,8 +131,15 @@ static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *of
  *  @param offset The offset if required
  */
 static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, loff_t *offset){
+  if(mutex_trylock(&readWrite_mutex) == 0){
+      printk(KERN_ALERT "WriteEbbChar: buffer in use!!!");
+      return -EBUSY;
+  }
+
+
    if(size_of_message >= (short)BUFFER_LEN){
       printk(KERN_INFO "WriteEbbChar: buffer full 0 characters writen");
+      mutex_unlock(&readWrite_mutex);
       return len;
    }else if((size_of_message + (short)len) > BUFFER_LEN){
       int i;
@@ -134,6 +149,7 @@ static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, lof
       }
       size_of_message +=(short)j;
       printk(KERN_INFO "WriteEbbChar: Not enough room in buffer %d characters writen", j-1);
+      mutex_unlock(&readWrite_mutex);
       return len;
    }else{
       int i;
@@ -143,9 +159,10 @@ static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, lof
       }
       size_of_message +=(short)len;                 // store the length of the stored message
       printk(KERN_INFO "WriteEbbChar: Received %zu characters from the user\n", len);
+      mutex_unlock(&readWrite_mutex);
       return len;
-
    }
+
 
 }
 
@@ -156,6 +173,7 @@ static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, lof
  */
 static int dev_release(struct inode *inodep, struct file *filep){
    printk(KERN_INFO "WriteEbbChar: Device successfully closed\n");
+   mutex_destroy(&readWrite_mutex);
    return 0;
 }
 
